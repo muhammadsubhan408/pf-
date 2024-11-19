@@ -4,8 +4,10 @@
 #include<stdlib.h>
 #include<time.h>
 
-int score1,score2,wicket=1;
+int score1,score2,wicket=1,draw=0;
 char ball,bat;
+
+
 
 void Target(int count){
 	do{
@@ -25,7 +27,7 @@ void Target(int count){
 		}
 		if(ball==bat){
 			wicket--;
-			printf("OUT!\n\n");
+			printf("OUT!\n\n",bat);
 			break;
 		}
 		printf("Batsman scored %c runs\n\n",bat);
@@ -53,15 +55,13 @@ void Target(int count){
 				score1-=6;
 				break;
 		}
-		printf("Score: %d\n",score1);
-		printf("==========================================\n\n");
+		printf("Score: %d\n\n",score1);
 		count--;
 	}while(ball!=bat);
-	printf("Target: %d\n",score1+1);
-	printf("==========================================\n\n");
-	printf("\tSECOND INNINGS START\n\n");
-	Chase(count);
+	printf("Target: %d\n\n",score1+1);
 }
+
+
 
 void Chase(int count){
 	do{
@@ -80,14 +80,14 @@ void Chase(int count){
 		}
 		if(ball==bat){
 			wicket--;
-			printf("OUT!\n\n");
+			printf("OUT!\n\n",bat);
 			if(score2<score1){
 				printf("PLAYER 1 WINS BY %d RUNS !!!\n",score1-score2);
 				break;
 			}
 			else if(score2==score1){
 				printf("MATCH DRAWN !!!\n");
-				SuperOver();
+				draw=1;
 			    break;
 			}
 		}
@@ -117,8 +117,6 @@ void Chase(int count){
 			    break;
 		}
 		printf("Score: %d\n\n",score2);
-		printf("\tSECOND INNINGS START\n\n");
-		printf("==========================================\n\n");
 		if(score2>score1){
 			printf("PLAYER 2 WINS!!\n\n");
 			break;
@@ -127,14 +125,14 @@ void Chase(int count){
 	}while(ball!=bat);
 }
 
-
 void SuperOver(){
 	wicket=1,score1=0,score2=0;
 	printf("\t\t SUPER OVER\n\n");
 	printf("PLAYER 1 WILL BAT FIRST\n");
 	Target(6);
+	printf("\tSECOND INNINGS START\n\n");
+	Chase(6);
 }
-
 
 int Toss(){
 	srand(time(NULL));
@@ -148,15 +146,12 @@ int Toss(){
 		printf("Bat or Bowl ? (X for Bat/O for Ball): ");
 		scanf(" %c",&BB);
 		if(BB=='X'){
-			printf("\nPLAYER 1 BATS FIRST\n\n");
-			printf("==========================================\n\n");
+			printf("PLAYER 1 BATS FIRST\n\n");
 		}
 		else if(BB=='O'){
-			printf("\nPLAYER 1 BALLS FIRST\n\n");
-			printf("==========================================\n\n");
+			printf("PLAYER 1 BALLS FIRST\n\n");
 		}
 		printf("\n");
-		printf("\tFIRST INNINGS START\n\n");
 		Target(-1);
 	}
 	else if(value == 0 && HT=='H'||HT=='T'){
@@ -165,43 +160,42 @@ int Toss(){
 		
 		scanf(" %c",&BB);
 		if(BB=='X'){
-			printf("\nPLAYER 2 BATS FIRST\n\n");
-			printf("==========================================\n\n");
+			printf("PLAYER 2 BATS FIRST\n\n");
 		}
 		else if(BB=='O'){
-			printf("\nPLAYER 2 BALLS FIRST\n\n");
-			printf("==========================================\n\n");
+			printf("PLAYER 2 BALLS FIRST\n\n");
 		}
-		printf("\tFIRST INNINGS START\n\n");
 		Target(-1);
 	}
 	else{
-		printf("Invalid input\nPENALTY: Player 2 won the toss \n");
+		printf("invalid input as a penalty Player 2 won the toss \n");
 		printf("Bat or Bowl ? (X for Bat/O for Ball): ");
 		scanf(" %c",&BB);
 		if(BB=='X'){
-			printf("\nPLAYER 2 BATS FIRST\n\n");
-			printf("==========================================\n\n");
+			printf("PLAYER 2 BATS FIRST\n\n");
 		}
 		else if(BB=='O'){
-			printf("\nPLAYER 2 BALLS FIRST\n\n");
-			printf("==========================================\n\n");
+			printf("PLAYER 2 BALLS FIRST\n\n");
 		}
-		printf("\tFIRST INNINGS START\n\n");
 		Target(-1);
 	}	
 }
 
+
+
 int main(){
-	
 	printf("\t\t CRICKET SIMULATION\n");
-	printf("RULES:\n1)KEEP THE CAPSLOCK ON WHILE PLAYING THE GAME!!\n");
+	printf("RULES:\n1)KEEP THE CAPSLOCK ON WHILE LAYING THE GAME!!\n");
 	printf("2)If bowler enters an invalid input, batsman will get 6 runs.\n");
 	printf("3)If batsman enters an invalid input, 6 runs will be deducted from the score\n");
 	printf("4)Same inputs is Out.\n5)Different inputs, game continues.\n\n");
 	
 	Toss();
-	
+	printf("\tSECOND INNINGS START\n\n");
+	Chase(-1);
+	if(draw==1){
+		SuperOver();
+	}
 	return 0;
 }
 
